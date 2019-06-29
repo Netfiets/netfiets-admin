@@ -1,11 +1,13 @@
-import { observable, action, decorate } from 'mobx'
+import { observable, action, decorate, computed } from 'mobx'
 import firebase from 'firebase/app'
 import 'firebase/auth'
 
 import { NotifierStore } from '../Notifier';
 
+const STORAGE_ID = 'auth:user'
+
 export default class AuthStore {
-  user: any
+  _user: any
   error: any
   notifierStore: NotifierStore
 
@@ -37,10 +39,28 @@ export default class AuthStore {
   signOut() {
     this.user = undefined
   }
+
+  set user(user) {
+    this._user = user
+    localStorage.setItem(STORAGE_ID, JSON.stringify(user))
+  }
+
+  get user() {
+    if (!this._user) {
+      try {
+        const data = localStorage.getItem(STORAGE_ID)
+        return data && (this._user = JSON.parse(data))
+      } catch(e) {
+        // nth
+      }
+    }
+    return this._user
+  }
 }
 
 decorate(AuthStore, {
-  user: observable,
+  user: computed,
+  _user: observable,
   error: observable,
   isLoading: observable,
   onSignInError: action,
