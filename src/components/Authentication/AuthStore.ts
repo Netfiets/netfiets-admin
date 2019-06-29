@@ -33,9 +33,10 @@ export default class AuthStore {
     this.user = user
     this.error = undefined
   }
-
+  
   signOut() {
-    this.user = undefined
+    this.isLoading = true
+    firebase.auth().signOut()
   }
 }
 
@@ -45,4 +46,5 @@ decorate(AuthStore, {
   isLoading: observable,
   onSignInError: action,
   onAuthStateChanged: action,
+  signOut: action,
 })

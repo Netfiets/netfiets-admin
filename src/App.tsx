@@ -1,23 +1,31 @@
 import React from 'react'
 import { inject, observer } from 'mobx-react'
-import { LinearProgress } from '@material-ui/core'
+import { LinearProgress, makeStyles } from '@material-ui/core'
 
-import { LoginForm, AuthStore, Notifier, Dashboard } from './components'
+import { LoginView, AuthStore, Notifier, Dashboard } from './components'
+
+const useStyles = makeStyles(theme => ({
+  root: {
+    display: 'flex',
+    height: '100vh',
+  }
+}))
 
 interface AppProps {
   authStore?: AuthStore
 }
 
 const App: React.FC<AppProps> = ({ authStore }) => {
+  const classes = useStyles()
   const { isLoading } = authStore!
   return (
     <>
       {isLoading && <LinearProgress />}
       <Notifier />
-      <main>
+      <main className={classes.root}>
         {!isLoading && (authStore!.user
           ? <Dashboard />
-          : <LoginForm />
+          : <LoginView />
         )}
       </main>
     </>

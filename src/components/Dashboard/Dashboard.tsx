@@ -6,18 +6,13 @@ import {
   IconButton,
   Typography,
   Drawer,
-  List,
-  Divider,
-  MenuItem,
-  ListItem,
 } from '@material-ui/core'
 import { Menu as MenuIcon, AccountCircle } from '@material-ui/icons'
 import { makeStyles } from '@material-ui/core/styles'
 
 import { AuthStore } from '../Authentication'
 import UserMenu from './UserMenu'
-
-import { version } from '../../../package.json'
+import AppMenu from './AppMenu'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -29,20 +24,6 @@ const useStyles = makeStyles(theme => ({
   title: {
     flexGrow: 1,
   },
-  sidebar: {
-    width: 250
-  },
-  sidebarHeader: {
-    flexDirection: 'column',
-    alignItems: 'flex-start',
-    color: theme.palette.grey[500],
-  },
-  headLogo: {
-    fontSize: '2.5em',
-  },
-  headSmall: {
-    fontSize: '.8em',
-  }
 }))
 
 interface DashboardProps {
@@ -84,7 +65,7 @@ const Dashboard: React.FC<DashboardProps> = ({ authStore }) => {
             Netfiets
           </Typography>
           {authStore!.user && (
-            <div>
+            <>
               <IconButton
                 aria-label="Benutzerkonto des aktuellen Benutzers"
                 aria-controls="menu-appbar"
@@ -100,32 +81,13 @@ const Dashboard: React.FC<DashboardProps> = ({ authStore }) => {
                 onClose={onCloseAccountMenu}
                 anchorEl={accountMenuAnchor!}
               />
-            </div>
+            </>
           )}
         </Toolbar>
       </AppBar>
 
       <Drawer open={openDrawer} onClose={() => setOpenDrawer(false)}>
-        <List className={classes.sidebar}>
-          <ListItem className={classes.sidebarHeader}>
-            <Typography className={classes.headLogo}>Netfiets</Typography>
-            <Typography className={classes.headSmall}>v{version}</Typography>
-          </ListItem>
-          <Divider />
-          <>
-            {[
-              'Fahrrad Suchen',
-              'Meine Buchungen',
-              'Hilfe',
-              <Divider />,
-              'Impressum & Kontakt',
-            ].map((item, index) =>
-              typeof item === 'string'
-                ? <MenuItem key={index}>{item}</MenuItem>
-                : item
-            )}
-          </>
-        </List>
+        <AppMenu />
       </Drawer>
     </main>
   )

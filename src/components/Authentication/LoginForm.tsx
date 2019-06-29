@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { inject, observer } from 'mobx-react';
-import { TextField, Theme, Button } from '@material-ui/core'
+import { Theme, Button, Paper, Typography, Divider, Input } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles';
 
 import { AuthStore } from '../';
@@ -10,14 +10,30 @@ interface LoginFormProps {
 }
 
 const useStyles = makeStyles((theme: Theme) => ({
-  container: {
+  root: {
     display: 'flex',
-    alignItems: 'flex-end',
+    flexDirection: 'column',
+    alignItems: 'stretch',
+  },
+  headline: {
+    margin: theme.spacing(2),
+  },
+  subhead: {
+    margin: theme.spacing(1),
+    marginTop: theme.spacing(2),
+  },
+  form: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignSelf: 'center',
+    alignItems: 'stretch',
+    width: '16em',
+    margin: theme.spacing(2),
+    marginTop: 0,
   },
   formItem: {
-    marginLeft: theme.spacing(1),
-    marginRight: theme.spacing(1),
-  }
+    marginTop: theme.spacing(2),
+  },
 }))
 
 const LoginForm: React.FC<LoginFormProps> = ({ authStore }) => {
@@ -34,34 +50,43 @@ const LoginForm: React.FC<LoginFormProps> = ({ authStore }) => {
   const { error } = authStore!
 
   return (
-    <form className={classes.container} onSubmit={onSubmit}>
-      <TextField
-        id="login-email"
-        label="Email"
-        type="email"
-        value={email}
-        error={Boolean(error)}
-        onChange={e => setEmail(e.target.value)}
-        className={classes.formItem}
-      />
-      <TextField
-        id="login-password"
-        label="Password"
-        type="password"
-        value={password}
-        error={Boolean(error)}
-        onChange={e => setPassword(e.target.value)}
-        className={classes.formItem}
-      />
-      <Button
-        variant="contained"
-        color="primary"
-        className={classes.formItem}
-        type="submit"
-      >
+    <Paper elevation={4} className={classes.root}>
+      <Typography variant="h4" className={classes.headline} align="center">
+        Einfach anmelden und mitmachen
+      </Typography>
+      <Divider />
+      <Typography variant="body1" className={classes.subhead} align="center">
+        Option 1: Mit Email und password anmelden
+      </Typography>
+      <form className={classes.form} onSubmit={onSubmit}>
+        <Input
+          id="login-email"
+          placeholder="Email"
+          type="email"
+          value={email}
+          error={Boolean(error)}
+          onChange={e => setEmail(e.target.value)}
+          className={classes.formItem}
+        />
+        <Input
+          id="login-password"
+          placeholder="Password"
+          type="password"
+          value={password}
+          error={Boolean(error)}
+          onChange={e => setPassword(e.target.value)}
+          className={classes.formItem}
+        />
+        <Button
+          variant="contained"
+          color="primary"
+          className={classes.formItem}
+          type="submit"
+        >
           Login
-      </Button>
-    </form>
+        </Button>
+      </form>
+    </Paper>
   )
 }
 
