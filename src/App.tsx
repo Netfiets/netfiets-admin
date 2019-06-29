@@ -1,5 +1,6 @@
-import React, { Fragment } from 'react'
+import React from 'react'
 import { inject, observer } from 'mobx-react'
+import { LinearProgress } from '@material-ui/core'
 
 import { LoginForm, AuthStore, Notifier, Dashboard } from './components'
 
@@ -8,16 +9,18 @@ interface AppProps {
 }
 
 const App: React.FC<AppProps> = ({ authStore }) => {
+  const { isLoading } = authStore!
   return (
-    <Fragment>
-      <Notifier/>
+    <>
+      {isLoading && <LinearProgress />}
+      <Notifier />
       <main>
-        {authStore!.user
-          ? <Dashboard/>
-          : <LoginForm/>
-        }
+        {!isLoading && (authStore!.user
+          ? <Dashboard />
+          : <LoginForm />
+        )}
       </main>
-    </Fragment>
+    </>
   )
 }
 

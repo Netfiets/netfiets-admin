@@ -9,9 +9,12 @@ export default class AuthStore {
   error: any
   notifierStore: NotifierStore
 
+  isLoading: boolean = false
+
   constructor(notifierStore: NotifierStore) {
     this.notifierStore = notifierStore
 
+    this.isLoading = true
     firebase.auth().onAuthStateChanged(this.onAuthStateChanged.bind(this))
   }
 
@@ -26,6 +29,7 @@ export default class AuthStore {
   }
 
   onAuthStateChanged(user: any) {
+    this.isLoading = false
     this.user = user
     this.error = undefined
   }
@@ -38,6 +42,7 @@ export default class AuthStore {
 decorate(AuthStore, {
   user: observable,
   error: observable,
+  isLoading: observable,
   onSignInError: action,
   onAuthStateChanged: action,
 })

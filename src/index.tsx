@@ -11,6 +11,8 @@ import * as serviceWorker from './serviceWorker'
 import theme from './theme'
 import stores from './stores'
 
+import './styles.css'
+
 const env = process.env
 
 firebase.initializeApp({
